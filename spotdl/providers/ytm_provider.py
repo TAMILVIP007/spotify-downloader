@@ -280,8 +280,7 @@ def _map_result_to_song_data(result: dict) -> dict:
         "position": 0,
     }
 
-    album = result.get("album")
-    if album:
+    if album := result.get("album"):
         song_data["album"] = album["name"]
 
     return song_data
