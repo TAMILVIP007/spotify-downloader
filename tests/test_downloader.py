@@ -10,12 +10,8 @@ from spotdl.download import ffmpeg, downloader
 
 
 def create_song_obj(name: str = None, artists_input: list = None) -> SongObject:
-    if name == None:
-        song_name = "test song"
-    else:
-        song_name = name
-
-    if artists_input == None:
+    song_name = "test song" if name is None else name
+    if artists_input is None:
         artist_objs = list(map(lambda x: {"name": x}, ["test artist"]))
     else:
         artist_objs = list(map(lambda x: {"name": x}, artists_input))
@@ -127,7 +123,7 @@ def test_download_long_name_song(setup):
 
 
 def test_download_multiple_songs(pytestconfig, setup):
-    if not "--disable-vcr" in pytestconfig.invocation_params.args:
+    if "--disable-vcr" not in pytestconfig.invocation_params.args:
         # this test is very similar to the other one, and the http request
         # seems not deterministic so it can't be reliably capture into cassette,
         # therefore run this test only when VCR is disabled

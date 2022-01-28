@@ -94,31 +94,19 @@ def _order_yt_results(
 
         sentence_words = lower_song_name.replace("-", " ").split(" ")
 
-        common_word = False
-
-        # ! check for common word
-        for word in sentence_words:
-            if word != "" and word in lower_result_name:
-                common_word = True
+        common_word = any(
+            word != "" and word in lower_result_name for word in sentence_words
+        )
 
         # ! if there are no common words, skip result
-        if common_word is False:
+        if not common_word:
             continue
 
         # Find artist match
         # ! match  = (no of artist names in result) / (no. of artist names on spotify) * 100
-        artist_match_number = 0
-
-        # ! we use fuzzy matching because YouTube spellings might be mucked up
-        # ! i.e if video
-        for artist in song_artists:
-            # ! something like _match_percentage('rionos', 'aiobahn, rionos Motivation
-            # ! (remix)' would return 100, so we're absolutely corrent in matching
-            # ! artists to song name.
-            if _match_percentage(
+        artist_match_number = sum(1 for artist in song_artists if _match_percentage(
                 unidecode(artist.lower()), unidecode(result.title).lower(), 85
-            ):
-                artist_match_number += 1
+            ))
 
         # ! Skip if there are no artists in common, (else, results like 'Griffith Swank -
         # ! Madness' will be the top match for 'Ruelle - Madness')

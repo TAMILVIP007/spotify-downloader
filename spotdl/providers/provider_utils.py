@@ -149,6 +149,4 @@ def _parse_path_template(path_template, song_object, output_format, short=False)
             path_template, song_object, output_format, short=True
         )
 
-    converted_file_path = Path(converted_file_name)
-
-    return converted_file_path
+    return Path(converted_file_name)

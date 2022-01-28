@@ -152,10 +152,7 @@ class SongObject:
         returns name of the playlist that the song belongs to.
         """
 
-        if self._playlist is None:
-            return None
-
-        return self._playlist["name"]
+        return None if self._playlist is None else self._playlist["name"]
 
     @property
     def data_dump(self) -> dict:

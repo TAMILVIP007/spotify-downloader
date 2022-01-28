@@ -168,14 +168,10 @@ def _embed_m4a_metadata(audio_file, song_object: SongObject):
     if len(years) >= 1:
         audio_file[M4A_TAG_PRESET["year"]] = years[0]
 
-    # set youtube link as comment
-    youtube_link = song_object.youtube_link
-    if youtube_link:
+    if youtube_link := song_object.youtube_link:
         audio_file[M4A_TAG_PRESET["comment"]] = youtube_link
 
-    # set lyrics
-    lyrics = song_object.lyrics
-    if lyrics:
+    if lyrics := song_object.lyrics:
         audio_file[M4A_TAG_PRESET["lyrics"]] = lyrics
 
     # Explicit values: Dirty: 4, Clean: 2, None: 0
@@ -204,19 +200,13 @@ def _embed_basic_metadata(
         audio_file[preset["artist"]] = artists[0]
         audio_file[preset["albumartist"]] = artists[0]
 
-    # set song title
-    song_title = song_object.song_name
-    if song_title:
+    if song_title := song_object.song_name:
         audio_file[preset["title"]] = song_title
 
-    # set album name
-    album_name = song_object.album_name
-    if album_name:
+    if album_name := song_object.album_name:
         audio_file[preset["album"]] = album_name
 
-    # set release data
-    release_data = song_object.album_release
-    if release_data:
+    if release_data := song_object.album_release:
         audio_file[preset["date"]] = release_data
         audio_file[preset["originaldate"]] = release_data
 
@@ -225,17 +215,13 @@ def _embed_basic_metadata(
     if len(genres) >= 1:
         audio_file[preset["genre"]] = genres[0]
 
-    # set disc number
-    disc_number = song_object.disc_number
-    if disc_number:
+    if disc_number := song_object.disc_number:
         if encoding in ["flac", "ogg", "opus"]:
             audio_file[preset["discnumber"]] = str(disc_number)
         else:
             audio_file[preset["discnumber"]] = [(disc_number, 0)]
 
-    # set track number
-    track_number = song_object.track_number
-    if track_number:
+    if track_number := song_object.track_number:
         if encoding in ["flac", "ogg", "opus"]:
             audio_file[preset["tracknumber"]] = str(track_number)
         else:
@@ -250,14 +236,10 @@ def _embed_ogg_metadata(audio_file, song_object: SongObject):
     if len(years) >= 1:
         audio_file["year"] = years[0]
 
-    # set youtube link as comment
-    youtube_link = song_object.youtube_link
-    if youtube_link:
+    if youtube_link := song_object.youtube_link:
         audio_file["comment"] = youtube_link
 
-    # set lyrics
-    lyrics = song_object.lyrics
-    if lyrics:
+    if lyrics := song_object.lyrics:
         audio_file["lyrics"] = lyrics
 
     return audio_file
@@ -295,6 +277,5 @@ SET_ID3_FUNCTIONS = {
 
 
 def set_id3_data(converted_file_path, song_object, output_format):
-    function = SET_ID3_FUNCTIONS.get(output_format)
-    if function:
+    if function := SET_ID3_FUNCTIONS.get(output_format):
         function(converted_file_path, song_object)
